@@ -7,6 +7,16 @@ namespace Disable_Screensaver_Windows
 {
     class Program
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0, 
+            SW_SHOW = 5,
+            SW_MINIMIZE = 6;
+
         static void Main(string[] args)
         {
             Timer timer = new Timer();
@@ -14,9 +24,15 @@ namespace Disable_Screensaver_Windows
             timer.Interval = (int)(TimeSpan.TicksPerMinute * 4 / TimeSpan.TicksPerMillisecond);
             timer.Tick += (sender, timerArgs) => { Cursor.Position = new Point(Cursor.Position.X + 1, Cursor.Position.Y + 1); PreventSleep(); };
             timer.Start();
-            Application.Run();
 
             PreventSleep();
+
+            var handle = GetConsoleWindow();
+
+            // minimize
+            ShowWindow(handle, SW_MINIMIZE);
+
+            Application.Run();
         }
 
         [FlagsAttribute]
