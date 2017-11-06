@@ -19,6 +19,10 @@ namespace Disable_Screensaver_Windows
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Screensaver disabled");
+            Console.WriteLine("Minimizing...");
+            System.Threading.Thread.Sleep(800);
+
             Timer timer = new Timer();
             // timer.Interval = 4 minutes
             timer.Interval = (int)(TimeSpan.TicksPerMinute * 4 / TimeSpan.TicksPerMillisecond);
